@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Kamu benar-benar sampai sejauh ini. -->
+  <!-- Tapi kamu masih belum tahu siapa yang mengamatimu. -->
+  <!-- Dia sudah di belakangmu. -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Observe</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      background-color: black;
+      overflow: hidden;
+      font-family: 'Courier New', Courier, monospace;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      touch-action: none;
+    }
+    #message {
+      font-size: 1.8rem;
+      text-align: center;
+      display: none;
+      padding: 1rem;
+      white-space: pre-wrap;
+    }
+    .flash {
+      background-color: white !important;
+    }
+    #camera-sim {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      color: lime;
+      font-family: monospace;
+      font-size: 1.2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      display: none;
+      text-align: center;
+      padding: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="message"></div>
+  <div id="camera-sim">mengakses kamera depan...</div>
+
+  <script>
+    // Apakah kamu percaya ini hanya cerita fiksi?
+    // Apakah kamu yakin pengamat itu hanya karakter?
+    // Kenapa kamu menggulir ke bawah? Apa yang kamu cari?
+
+    console.log("Kenapa kamu mencari tahu?");
+    console.log("Kau tidak seharusnya melihat ini.");
+    console.log("Sekarang, dia juga bisa melihatmu.");
+    console.log("// Kamu membaca kode ini? Mungkin kamu juga bagian dari ceritanya.");
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key.length === 1) {
+        document.body.style.fontFamily = "monospace";
+        setTimeout(() => {
+          document.body.style.fontFamily = "Courier New";
+        }, 300);
+      }
+    });
+
+    function flashEffect() {
+      document.body.classList.add('flash');
+      setTimeout(() => {
+        document.body.classList.remove('flash');
+      }, 100);
+    }
+
+    function typeMessage(text, element, callback) {
+      let i = 0;
+      element.textContent = '';
+      function type() {
+        if (i < text.length) {
+          element.textContent += text.charAt(i);
+          i++;
+          setTimeout(type, 90);
+        } else if (callback) {
+          callback();
+        }
+      }
+      type();
+    }
+
+    function showMessage() {
+      flashEffect();
+      setTimeout(() => {
+        const message = document.getElementById('message');
+        message.style.display = 'block';
+        typeMessage("kamu selanjutnya.", message, () => {
+          setTimeout(() => {
+            flashEffect();
+            closeWindow();
+          }, 3000);
+        });
+      }, 1000); // delay 1 detik setelah flash sebelum mulai mengetik
+    }
+
+    function showFakeCameraAccess() {
+      const camera = document.getElementById('camera-sim');
+      camera.style.display = 'flex';
+      setTimeout(() => {
+        camera.innerText = "kamera diaktifkan.";
+      }, 1500);
+      setTimeout(() => {
+        camera.style.display = 'none';
+      }, 3000);
+    }
+
+    function triggerSequence() {
+      const delay = Math.floor(Math.random() * 5000) + 3000;
+      setTimeout(() => {
+        flashEffect();
+        showFakeCameraAccess();
+        setTimeout(() => {
+          showMessage();
+        }, 3000);
+      }, delay);
+    }
+
+    function closeWindow() {
+      window.location.replace("about:blank");
+    }
+
+    triggerSequence();
+  </script>
+</body>
+</html>
